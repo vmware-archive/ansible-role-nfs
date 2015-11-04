@@ -14,6 +14,10 @@
 #  limitations under the License.
 #
 ---
+- name: Upgrade apt cache
+  apt: update_cache=yes
+  when: (ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu') and update_package_cache
+
 - name: create file systems
   filesystem: fstype={{ item.fstype }}  dev={{ item.device }}
   with_items: nfs_exports
