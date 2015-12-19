@@ -1,25 +1,27 @@
 # ansible-role-nfs
 
-[Ansible](https://github.com/ansible/ansible) role for managing
-NFS exports. Note that the role does not format partitions
-or other block devices.
+[Ansible](https://github.com/ansible/ansible) role for managing NFS exports.
+Note that the role formats partitions or other block devices as necessary and
+as defined by the role variables.
 
 ## Requirements
 
-All exports must already have valid file systems on the exported
-block devices (or binds).
+All exports must already have valid block devices, which are specified in the
+role variables.
 
 ## Role Variables
 
 Available variables are listed below, along with default values (see `defaults/main.yml`):
 
-    nfs_exports: []
-
-A list of exports.
+```yaml
+# Exports to provide. Format example:
+#  - { device: "/dev/sdb", mount_point: "/exports/management", fstype: "ext4", mount_opts: "noatime", nfs_opts: "172.16.69.0/24(rw,nohide,insecure,no_subtree_check,async)" }
+nfs_exports: []
+```
 
 ## Example playbook
 
-```
+```yaml
 ---
 - hosts: nfsservers
   sudo: True
