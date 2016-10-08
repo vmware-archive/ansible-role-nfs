@@ -14,29 +14,13 @@
 #  limitations under the License.
 #
 ---
+- name: Upgrade apt cache
+  apt: update_cache=yes
+
 - name: assure nfs packages and kernel modules installed
   apt: pkg={{ item }} state=installed
   with_items:
     - nfs-kernel-server
-
-- name: assure exports directories exist
-  file:
-    dest: "{{ item.mount_point }}"
-    owner: root
-    group: root
-    state: directory
-    recurse: yes
-    mode: 0775
-  with_items: "{{ nfs_exports }}"
-
-- name: mount the storage on the export directories
-  mount:
-    name: "{{ item.mount_point }}"
-    src: "{{ item.device }}"
-    fstype: "{{ item.fstype }}"
-    opts: "{{ item.mount_opts }}"
-    state: mounted
-  with_items: "{{ nfs_exports }}"
 
 - name: turn off NFSv4 security
   lineinfile:
@@ -44,12 +28,3 @@
     regexp: "^NEED_SVCGSSD="
     line: "NEED_SVCGSSD=no"
     state: present
-
-- name: generate exports file
-  template:
-    src: exports.j2
-    dest: /etc/exports
-    owner: root
-    group: root
-  notify:
-    - restart nfs-kernel-server

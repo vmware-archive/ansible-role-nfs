@@ -14,10 +14,11 @@
 #  limitations under the License.
 #
 ---
-- include: common.yml
-
 - include: photon.yml
   when: ansible_lsb.codename == 'Photon'
 
 - include: debian.yml
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: common.yml
+

@@ -14,5 +14,8 @@
 #  limitations under the License.
 #
 ---
-- name: restart nfs on photon
-  debug: msg="NFS not yet implemented on Photon"
+- name: restart nfs-kernel-server
+  service: name=nfs-server state=restarted
+
+- name: nfs reexport
+  command: "exportfs -ra"

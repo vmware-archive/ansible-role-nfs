@@ -14,5 +14,9 @@
 #  limitations under the License.
 #
 ---
-- name: NFS not yet implementated on photon
-  debug: msg="NFS not yet implemented on Photon"
+- name: install deps
+  yum: name={{ item }} state=latest
+  with_items:
+    - nfs-utils
+  notify:
+    - restart nfs-kernel-server
